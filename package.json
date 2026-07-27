@@ -1,0 +1,108 @@
+{
+  "name": "vscode-vibescript",
+  "displayName": "Vibescript",
+  "description": "Vibescript language support: syntax highlighting and language server features for .vibe files.",
+  "version": "0.0.1",
+  "publisher": "mgomes",
+  "license": "MIT",
+  "author": {
+    "name": "Mauricio Gomes",
+    "email": "mauricio@edge14.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mgomes/vscode-vibescript.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "vibescript",
+    "vibe",
+    "lsp"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:vibescript"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "vibescript",
+        "aliases": [
+          "Vibescript",
+          "vibescript"
+        ],
+        "extensions": [
+          ".vibe"
+        ],
+        "firstLine": "^(?:#!.*\\bvibes\\b|# vibe: [0-9]+\\.[0-9]+)",
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "vibescript",
+        "scopeName": "source.vibescript",
+        "path": "./syntaxes/vibescript.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "Vibescript",
+      "properties": {
+        "vibescript.server.path": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Absolute path to the `vibes` binary. When empty, `vibes` is looked up on your `PATH`."
+        },
+        "vibescript.server.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "lsp"
+          ],
+          "markdownDescription": "Arguments passed to the `vibes` binary to start the language server."
+        },
+        "vibescript.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the Vibescript language server."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "vibescript.restartServer",
+        "title": "Restart Language Server",
+        "category": "Vibescript"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test:grammar": "vscode-tmgrammar-test 'tests/grammar/*.vibe'",
+    "test:unit": "node --test tests/*.test.js",
+    "test": "npm run compile && npm run test:grammar && npm run test:unit"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0",
+    "vscode-tmgrammar-test": "^0.1.3"
+  }
+}
