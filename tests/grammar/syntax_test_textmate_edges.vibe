@@ -1,0 +1,76 @@
+# SYNTAX TEST "source.vibescript" "cases specific to the TextMate port"
+
+# TextMate has no equivalent of Sublime's `clear_scopes`, so interpolated code
+# keeps the enclosing string scope. `meta.embedded.line` is the conventional
+# signal instead, and default themes reset it to the editor foreground.
+msg = "count #{total}"
+#              ^^^^^ string.quoted.double.vibescript meta.interpolation.vibescript meta.embedded.line.vibescript
+
+# Braces inside an interpolation balance instead of closing it early.
+shaped = "#{ {name: value} } tail"
+#            ^ punctuation.section.braces.begin.vibescript
+#             ^^^^ constant.other.symbol.vibescript
+#                        ^ punctuation.section.braces.end.vibescript
+#                          ^ punctuation.section.interpolation.end.vibescript
+#                            ^^^^ string.quoted.double.vibescript
+#                                ^ punctuation.definition.string.end.vibescript
+
+# The name rides along in the `def` begin match, so any run of whitespace works.
+def    spaced(value)
+# <--- keyword.declaration.function.vibescript
+#      ^^^^^^ entity.name.function.vibescript
+#             ^^^^^ variable.parameter.vibescript
+  value
+end
+
+# A `def` with no name yet still colors the keyword.
+def
+# <--- keyword.declaration.function.vibescript
+
+# Enum names may be lowercase.
+enum status
+# <---- keyword.declaration.enum.vibescript
+#    ^^^^^^ entity.name.enum.vibescript
+  active
+# ^^^^^^ constant.other.enum.vibescript
+end
+
+# A bare `class` keyword with the name still to come.
+class
+# <----- keyword.declaration.class.vibescript
+
+# Type shapes nest, and the commas inside them do not end the annotation.
+def nested(cfg: { outer: { inner: String }, flag: bool }) -> nil
+#   ^^^^^^ entity.name.function.vibescript
+#          ^^^ variable.parameter.vibescript
+#                 ^^^^^ variable.other.member.vibescript
+#                          ^^^^^ variable.other.member.vibescript
+#                                 ^^^^^^ support.class.vibescript
+#                                        ^ punctuation.section.braces.end.vibescript
+#                                         ^ punctuation.separator.sequence.vibescript
+#                                           ^^^^ variable.other.member.vibescript
+#                                                 ^^^^ support.type.vibescript
+#                                                         ^^ punctuation.separator.annotation.return-type.vibescript
+#                                                            ^^^ constant.language.null.vibescript
+  cfg
+end
+
+# Block parameters after a brace block.
+items.each { |item| item }
+#     ^^^^ variable.function.vibescript
+#             ^^^^ variable.parameter.vibescript
+
+# A regex may hold a slash inside a character class.
+pattern = /[/]a/
+#         ^ punctuation.definition.string.begin.vibescript
+#           ^ string.regexp.vibescript
+#              ^ punctuation.definition.string.end.vibescript
+
+# Division after a closing bracket is arithmetic, never a regex.
+avg = totals[0] / count
+#               ^ keyword.operator.arithmetic.vibescript - string.regexp
+
+# Paren-less calls stop at a trailing keyword, so `done` is not a call.
+flag = ready if done
+#      ^^^^^ source.vibescript - variable.function
+#            ^^ keyword.control.conditional.vibescript

@@ -1,0 +1,401 @@
+# SYNTAX TEST "source.vibescript"
+
+class Greeter
+# <- keyword.declaration.class.vibescript
+#^^^^ keyword.declaration.class.vibescript
+#     ^^^^^^^ entity.name.class.vibescript
+  property name
+# ^^^^^^^^ keyword.declaration.member.vibescript
+#          ^^^^ variable.other.member.vibescript
+
+  def self.build(name: String?) -> Greeter
+# ^^^ keyword.declaration.function.vibescript
+#     ^^^^ variable.language.self.vibescript
+#         ^ punctuation.accessor.dot.vibescript
+#          ^^^^^ entity.name.function.vibescript
+#               ^ punctuation.section.group.begin.vibescript
+#                ^^^^ variable.parameter.vibescript
+#                    ^ punctuation.separator.annotation.type.vibescript
+#                      ^^^^^^ support.class.vibescript
+#                            ^ keyword.operator.optional.vibescript
+#                             ^ punctuation.section.group.end.vibescript
+#                               ^^ punctuation.separator.annotation.return-type.vibescript
+#                                  ^^^^^^^ support.class.vibescript
+    @name = :read
+#   ^^^^^ variable.other.member.vibescript
+#         ^ keyword.operator.assignment.vibescript
+#           ^^^^^ constant.other.symbol.vibescript
+    @@count += 1
+#   ^^^^^^^ variable.other.class.vibescript
+#           ^^ keyword.operator.assignment.augmented.vibescript
+#              ^ constant.numeric.integer.vibescript
+    "line\nnext"
+#   ^ punctuation.definition.string.begin.vibescript
+#    ^^^^ string.quoted.double.vibescript
+#        ^^ constant.character.escape.vibescript
+#              ^ punctuation.definition.string.end.vibescript
+    "oops\q"
+#        ^^ constant.character.escape.vibescript
+  end
+# ^^^ keyword.control.block.vibescript
+end
+
+private def secret
+# <- keyword.declaration.visibility.vibescript
+#       ^^^ keyword.declaration.function.vibescript
+#           ^^^^^^ entity.name.function.vibescript
+  42
+end
+
+export def exposed(value)
+# <- keyword.declaration.export.vibescript
+#      ^^^ keyword.declaration.function.vibescript
+#          ^^^^^^^ entity.name.function.vibescript
+  value
+end
+
+def open(path, mode = :read)
+#   ^^^^ entity.name.function.vibescript
+#        ^^^^ variable.parameter.vibescript
+#              ^^^^ variable.parameter.vibescript
+#                   ^ keyword.operator.assignment.vibescript
+#                     ^^^^^ constant.other.symbol.vibescript
+#                          ^ punctuation.section.group.end.vibescript
+  path
+end
+
+def config(opts: { name: String, age: int? }) -> nil
+#   ^^^^^^ entity.name.function.vibescript
+#          ^^^^ variable.parameter.vibescript
+#              ^ punctuation.separator.annotation.type.vibescript
+#                ^ punctuation.section.braces.begin.vibescript
+#                  ^^^^ variable.other.member.vibescript
+#                        ^^^^^^ support.class.vibescript
+#                                ^^^ variable.other.member.vibescript
+#                                     ^^^ support.type.vibescript
+#                                        ^ keyword.operator.optional.vibescript
+#                                          ^ punctuation.section.braces.end.vibescript
+#                                             ^^ punctuation.separator.annotation.return-type.vibescript
+#                                                ^^^ constant.language.null.vibescript
+  opts
+end
+
+helpers = require("./helpers")
+#         ^^^^^^^ keyword.control.import.vibescript
+
+sum = values.reduce(0) do |acc, value|
+#           ^ punctuation.accessor.dot.vibescript
+#            ^^^^^^ variable.function.vibescript
+#                      ^^ keyword.control.loop.vibescript
+#                         ^ punctuation.separator.block-parameters.begin.vibescript
+#                          ^^^ variable.parameter.vibescript
+#                               ^^^^^ variable.parameter.vibescript
+#                                    ^ punctuation.separator.block-parameters.end.vibescript
+  acc || value
+#     ^^ keyword.operator.logical.vibescript
+end
+
+if done and true
+# <- keyword.control.conditional.vibescript
+#       ^^^ keyword.operator.logical.vibescript
+#           ^^^^ constant.language.boolean.vibescript
+  yield(value)
+# ^^^^^ keyword.control.flow.vibescript
+#      ^ punctuation.section.brackets.vibescript
+end
+
+x ||= 1 <=> 2
+# ^^^ keyword.operator.assignment.augmented.vibescript
+#       ^^^ keyword.operator.comparison.vibescript
+
+ok = a === b && c =~ /h.llo/i
+#      ^^^ keyword.operator.comparison.vibescript
+#            ^^ keyword.operator.logical.vibescript
+#                 ^^ keyword.operator.match.vibescript
+#                    ^^^^^^^ string.regexp.vibescript
+#                    ^ punctuation.definition.string.begin.vibescript
+#                          ^ punctuation.definition.string.end.vibescript
+#                           ^ keyword.other.flag.regexp.vibescript
+
+half = total / 2
+#            ^ keyword.operator.arithmetic.vibescript
+
+url = user&.profile
+#         ^^ punctuation.accessor.safe-navigation.vibescript
+#           ^^^^^^^ variable.function.vibescript
+
+mode = Config::DEFAULT
+#      ^^^^^^ support.class.vibescript
+#            ^^ punctuation.accessor.double-colon.vibescript
+#              ^^^^^^^ support.class.vibescript
+
+slice = items[1...3]
+#              ^^^ keyword.operator.range.vibescript
+
+words = %w[alpha beta]
+#       ^^^ punctuation.definition.string.begin.vibescript
+#       ^^^^^^^^^^^^^^ string.quoted.other.percent-array.vibescript
+#                    ^ punctuation.definition.string.end.vibescript
+
+kinds = %i(alpha beta)
+#       ^^^ punctuation.definition.string.begin.vibescript
+#       ^^^^^^^^^^^^^^ string.quoted.other.percent-array.vibescript
+#                    ^ punctuation.definition.string.end.vibescript
+
+tag = :"hello world"
+#     ^^^^^^^^^^^^^^ constant.other.symbol.double-quoted.vibescript
+
+opts = { name: "alex", mode: :read }
+#        ^^^^ constant.other.symbol.vibescript
+#            ^ punctuation.definition.constant.vibescript
+#                      ^^^^ constant.other.symbol.vibescript
+#                            ^^^^^ constant.other.symbol.vibescript
+
+assert result
+# <- variable.function.vibescript
+
+puts "hello"
+# <- variable.function.vibescript
+
+label = valid? ? "ok" : "bad"
+#              ^ keyword.operator.ternary.vibescript
+#                     ^ punctuation.separator.vibescript
+
+for i in 1..10
+# <- keyword.control.loop.vibescript
+#     ^^ keyword.control.loop.vibescript
+#         ^^ keyword.operator.range.vibescript
+  i
+end
+
+begin
+# <- keyword.control.exception.vibescript
+  risky()
+rescue(RuntimeError)
+# <- keyword.control.exception.vibescript
+#      ^^^^^^^^^^^^ support.class.vibescript
+  recover()
+ensure
+# <- keyword.control.exception.vibescript
+  cleanup()
+end
+
+# vibe: 1.2
+# <- punctuation.definition.comment.vibescript
+# ^^^^ keyword.other.directive.vibescript
+#     ^ punctuation.separator.key-value.vibescript
+#       ^^^ constant.numeric.version.vibescript
+
+# uses: net, fs
+# ^^^^ keyword.other.directive.vibescript
+#       ^^^ support.other.capability.vibescript
+
+puts not ok
+# <- variable.function.vibescript
+#    ^^^ keyword.operator.logical.vibescript
+#        ^^ source.vibescript - keyword
+
+flag = not done or not ready
+#      ^^^ keyword.operator.logical.vibescript
+#          ^^^^ source.vibescript - variable.function
+#               ^^ keyword.operator.logical.vibescript
+#                  ^^^ keyword.operator.logical.vibescript
+
+msg = "sum #{count + 1} done"
+#     ^ punctuation.definition.string.begin.vibescript
+#      ^^^^ string.quoted.double.vibescript
+#          ^^ punctuation.section.interpolation.begin.vibescript
+#            ^^^^^ meta.interpolation.vibescript meta.embedded.line.vibescript
+#                  ^ keyword.operator.arithmetic.vibescript
+#                    ^ constant.numeric.integer.vibescript
+#                     ^ punctuation.section.interpolation.end.vibescript
+#                      ^^^^^ string.quoted.double.vibescript
+#                           ^ punctuation.definition.string.end.vibescript
+
+nest = "a#{"b#{c}d"}e"
+#          ^ punctuation.definition.string.begin.vibescript
+#           ^ string.quoted.double.vibescript
+#            ^^ punctuation.section.interpolation.begin.vibescript
+#              ^ meta.interpolation.vibescript
+#               ^ punctuation.section.interpolation.end.vibescript
+#                ^ string.quoted.double.vibescript
+#                 ^ punctuation.definition.string.end.vibescript
+#                  ^ punctuation.section.interpolation.end.vibescript
+#                   ^ string.quoted.double.vibescript
+
+raw = "price #5 and \#{skip}"
+#            ^ string.quoted.double.vibescript - punctuation.section.interpolation
+#                   ^^ constant.character.escape.vibescript
+#                     ^ string.quoted.double.vibescript - meta.interpolation
+#                           ^ punctuation.definition.string.end.vibescript
+
+pick = "v#{if ok then 1 else 2 end}"
+#          ^^ keyword.control.conditional.vibescript
+#                ^^^^ keyword.control.conditional.vibescript
+#                     ^ constant.numeric.integer.vibescript
+#                       ^^^^ keyword.control.conditional.vibescript
+#                              ^^^ keyword.control.block.vibescript
+#                                 ^ punctuation.section.interpolation.end.vibescript
+
+lit = 'no #{interp} \n raw'
+#     ^ punctuation.definition.string.begin.vibescript
+#      ^^^ string.quoted.single.vibescript
+#         ^^ string.quoted.single.vibescript - punctuation.section.interpolation
+#                   ^^ string.quoted.single.vibescript - constant.character.escape
+#                         ^ punctuation.definition.string.end.vibescript
+
+esc = 'don\'t \\ ok'
+#         ^^ constant.character.escape.vibescript
+#             ^^ constant.character.escape.vibescript
+#                  ^ punctuation.definition.string.end.vibescript
+paths = %W[/tmp #{base}/log]
+#       ^^^ punctuation.definition.string.begin.vibescript
+#          ^^^^ string.quoted.other.percent-array.vibescript
+#               ^^ punctuation.section.interpolation.begin.vibescript
+#                 ^^^^ meta.interpolation.vibescript meta.embedded.line.vibescript
+#                     ^ punctuation.section.interpolation.end.vibescript
+#                      ^^^^ string.quoted.other.percent-array.vibescript
+#                          ^ punctuation.definition.string.end.vibescript
+
+tags = %I(#{prefix}_id raw)
+#      ^^^ punctuation.definition.string.begin.vibescript
+#         ^^ punctuation.section.interpolation.begin.vibescript
+#                 ^ punctuation.section.interpolation.end.vibescript
+#                  ^^^ string.quoted.other.percent-array.vibescript
+#                         ^ punctuation.definition.string.end.vibescript
+
+plain = %w[#{x} y]
+#          ^^ string.quoted.other.percent-array.vibescript - punctuation.section.interpolation
+
+ratio = a / b
+#         ^ keyword.operator.arithmetic.vibescript - string.regexp
+
+sq = :'hello world'
+#    ^^^^^^^^^^^^^^ constant.other.symbol.single-quoted.vibescript
+
+ops = [:+, :<=>, :[]=, :&&, :!]
+#      ^^ constant.other.symbol.operator.vibescript
+#          ^^^^ constant.other.symbol.operator.vibescript
+#                ^^^^ constant.other.symbol.operator.vibescript
+#                      ^^^ constant.other.symbol.operator.vibescript
+#                           ^^ constant.other.symbol.operator.vibescript
+
+flags = [:valid?, :save!]
+#        ^^^^^^^ constant.other.symbol.vibescript
+#                 ^^^^^^ constant.other.symbol.vibescript
+
+hex = 0xFF_ab
+#     ^^^^^^^ constant.numeric.integer.hexadecimal.vibescript
+bin = 0b10_10
+#     ^^^^^^^ constant.numeric.integer.binary.vibescript
+oct = 0o755
+#     ^^^^^ constant.numeric.integer.octal.vibescript
+dec = 0d1_000
+#     ^^^^^^^ constant.numeric.integer.decimal.vibescript
+exp = 1e3
+#     ^^^ constant.numeric.float.vibescript
+neg = 1.5e-2
+#     ^^^^^^ constant.numeric.float.vibescript
+cap = 1E6
+#     ^^^ constant.numeric.float.vibescript
+sep = 1e1_0
+#     ^^^^^ constant.numeric.float.vibescript
+
+enum Color
+# <- keyword.declaration.enum.vibescript
+#^^^ keyword.declaration.enum.vibescript
+#    ^^^^^ entity.name.enum.vibescript
+  Red
+# ^^^ constant.other.enum.vibescript
+  Green
+# ^^^^^ constant.other.enum.vibescript
+end
+# <- keyword.control.block.vibescript
+
+class Ops
+  def +(other)
+#     ^ entity.name.function.vibescript
+    other
+  end
+
+  def <=>(other)
+#     ^^^ entity.name.function.vibescript
+    0
+  end
+
+  def [](key)
+#     ^^ entity.name.function.vibescript
+    key
+  end
+
+  def []=(key, value)
+#     ^^^ entity.name.function.vibescript
+    value
+  end
+
+  def balance=(value)
+#     ^^^^^^^^ entity.name.function.vibescript
+    value
+  end
+
+  def self.total=(value)
+#     ^^^^ variable.language.self.vibescript
+#         ^ punctuation.accessor.dot.vibescript
+#          ^^^^^^ entity.name.function.vibescript
+    value
+  end
+end
+
+alias hi hello
+# <- keyword.declaration.alias.vibescript
+#     ^^ entity.name.function.vibescript
+#        ^^^^^ entity.name.function.vibescript
+
+alias_method :"how-dy", :hello
+# <- keyword.declaration.alias.vibescript
+#            ^^^^^^^^^ constant.other.symbol.double-quoted.vibescript
+#                       ^^^^^^ constant.other.symbol.vibescript
+
+alias_method :plus, :+
+#            ^^^^^ constant.other.symbol.vibescript
+#                   ^^ constant.other.symbol.operator.vibescript
+
+private :+, :"weird name"
+# <- keyword.declaration.visibility.vibescript
+#       ^^ constant.other.symbol.operator.vibescript
+#           ^^^^^^^^^^^^^ constant.other.symbol.double-quoted.vibescript
+
+
+def lookup(h: { "user-id": string, :flag: bool, :"q k": int }) -> nil
+#               ^^^^^^^^^ string.quoted.double.vibescript
+#                        ^ punctuation.separator.annotation.type.vibescript
+#                          ^^^^^^ support.type.vibescript
+#                                  ^^^^^ constant.other.symbol.vibescript
+#                                       ^ punctuation.separator.annotation.type.vibescript
+#                                         ^^^^ support.type.vibescript
+#                                               ^^^^^^ constant.other.symbol.double-quoted.vibescript
+#                                                     ^ punctuation.separator.annotation.type.vibescript
+#                                                       ^^^ support.type.vibescript
+  h
+end
+
+begin
+  risky()
+rescue RuntimeError => err
+# <- keyword.control.exception.vibescript
+#      ^^^^^^^^^^^^ support.class.vibescript
+#                   ^^ keyword.operator.rescue-binding.vibescript
+  puts(err.message)
+end
+
+total%w[0]
+# <- - string.quoted.other.percent-array
+#    ^ keyword.operator.arithmetic.vibescript
+#     ^ - string.quoted.other.percent-array
+
+count = total %w[0]
+#             ^^^ string.quoted.other.percent-array.vibescript
+
+render 'ok'
+# <- variable.function.vibescript
+#      ^^^^ string.quoted.single.vibescript
