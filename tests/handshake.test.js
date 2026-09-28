@@ -120,3 +120,22 @@ test(
         );
     },
 );
+
+test(
+    "the Rust server checks static types and canonical operators",
+    { skip: binary ? false : "vibes is not on PATH" },
+    async () => {
+        const valid = await runHandshake(binary, SERVER_ARGS,
+            '# vibe: 0.80\ntype Pair = [int, string]\nvalue: int = 7 // 2\nvalue //= 2\n');
+        assert.equal(valid.code, 0);
+        const diagnostics = valid.messages.filter((m) => m.method === "textDocument/publishDiagnostics");
+        assert.ok(diagnostics.length > 0);
+        assert.ok(diagnostics.every((m) => m.params.diagnostics.length === 0));
+
+        const invalid = await runHandshake(binary, SERVER_ARGS, 'value: int = "wrong"\n');
+        assert.equal(invalid.code, 0);
+        assert.ok(invalid.messages.some((m) =>
+            m.method === "textDocument/publishDiagnostics" &&
+            m.params.diagnostics.some((d) => d.code === "V0101")));
+    },
+);

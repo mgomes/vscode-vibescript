@@ -2,55 +2,85 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Vibescript",
   "scopeName": "source.vibescript",
-  "fileTypes": ["vibe"],
+  "fileTypes": [
+    "vibe"
+  ],
   "firstLineMatch": "^(?:#!.*\\bvibes\\b|# vibe: [0-9]+\\.[0-9]+)",
   "patterns": [
-    { "include": "#comments" },
-    { "include": "#definitions" },
-    { "include": "#declarations" },
-    { "include": "#control-keywords" },
-    { "include": "#strings" },
-    { "include": "#numbers" },
-    { "include": "#symbols" },
-    { "include": "#hash-keys" },
-    { "include": "#percent-arrays" },
-    { "include": "#regexps" },
-    { "include": "#brace-block-parameters" },
-    { "include": "#variables" },
-    { "include": "#calls" },
-    { "include": "#constants" },
-    { "include": "#identifiers" },
-    { "include": "#operators" },
-    { "include": "#punctuation" }
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#definitions"
+    },
+    {
+      "include": "#type-alias"
+    },
+    {
+      "include": "#typed-local"
+    },
+    {
+      "include": "#type-cast"
+    },
+    {
+      "include": "#type-literals"
+    },
+    {
+      "include": "#declarations"
+    },
+    {
+      "include": "#control-keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#symbols"
+    },
+    {
+      "include": "#hash-keys"
+    },
+    {
+      "include": "#regexps"
+    },
+    {
+      "include": "#brace-block-parameters"
+    },
+    {
+      "include": "#variables"
+    },
+    {
+      "include": "#calls"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#identifiers"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    }
   ],
   "repository": {
     "comments": {
-      "begin": "#",
-      "beginCaptures": {
-        "0": { "name": "punctuation.definition.comment.vibescript" }
-      },
-      "end": "$",
-      "name": "comment.line.number-sign.vibescript",
       "patterns": [
         {
-          "match": "\\b(vibe)(:)\\s+([0-9]+\\.[0-9]+)\\b",
-          "captures": {
-            "1": { "name": "keyword.other.directive.vibescript" },
-            "2": { "name": "punctuation.separator.key-value.vibescript" },
-            "3": { "name": "constant.numeric.version.vibescript" }
-          }
+          "begin": "^=begin(?=\\s|$)",
+          "end": "^=end(?=\\s|$).*",
+          "name": "comment.block.vibescript"
         },
         {
-          "match": "\\b(uses)(:)\\s+([a-z_, ]+)",
-          "captures": {
-            "1": { "name": "keyword.other.directive.vibescript" },
-            "2": { "name": "punctuation.separator.key-value.vibescript" },
-            "3": { "name": "support.other.capability.vibescript" }
-          }
+          "include": "#line-comment"
         }
       ]
     },
-
     "definitions": {
       "patterns": [
         {
@@ -66,49 +96,89 @@
           "match": "\\b(private|public|protected)\\b(?=\\s*$|\\s+:)",
           "name": "keyword.declaration.visibility.vibescript"
         },
-        { "include": "#function-declaration" },
-        { "include": "#bare-def" },
-        { "include": "#class-declaration" },
-        { "include": "#enum-declaration" }
+        {
+          "include": "#function-declaration"
+        },
+        {
+          "include": "#bare-def"
+        },
+        {
+          "include": "#class-declaration"
+        },
+        {
+          "include": "#enum-declaration"
+        },
+        {
+          "match": "\\b(module)\\s+([A-Z][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.module.vibescript"
+            },
+            "2": {
+              "name": "entity.name.namespace.vibescript"
+            }
+          }
+        }
       ]
     },
-
     "function-declaration": {
       "comment": "Sublime's function-declaration/function-name-after-self/function-signature-tail chain, flattened into one line-scoped rule. The name alternation is ordered longest-first because Oniguruma alternation is leftmost-first: setter names before plain ones, `[]=` before `[]`, multi-character operators before the single-character class.",
-      "begin": "\\b(def)\\s+(?:(self)(\\.))?([a-z_][a-zA-Z0-9_]*=(?![=~>])|\\[\\]=|\\[\\]|<=>|<=|>=|==|!=|<<|\\*\\*|[a-z_][a-zA-Z0-9_]*[?!]?|[+\\-*/%<>&])",
+      "begin": "\\b(def)\\s+(?:(self)(\\.))?([a-z_][a-zA-Z0-9_]*=(?![=~>])|\\[\\]=|\\[\\]|<=>|<=|>=|==|!=|<<|//|\\*\\*|[a-z_][a-zA-Z0-9_]*[?!]?|[+\\-*/%<>&])",
       "beginCaptures": {
-        "1": { "name": "keyword.declaration.function.vibescript" },
-        "2": { "name": "variable.language.self.vibescript" },
-        "3": { "name": "punctuation.accessor.dot.vibescript" },
-        "4": { "name": "entity.name.function.vibescript" }
+        "1": {
+          "name": "keyword.declaration.function.vibescript"
+        },
+        "2": {
+          "name": "variable.language.self.vibescript"
+        },
+        "3": {
+          "name": "punctuation.accessor.dot.vibescript"
+        },
+        "4": {
+          "name": "entity.name.function.vibescript"
+        }
       },
       "end": "$",
       "name": "meta.function.vibescript",
       "patterns": [
-        { "include": "#comments" },
-        { "include": "#parameters" },
-        { "include": "#return-type" }
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#parameters"
+        },
+        {
+          "include": "#return-type"
+        }
       ]
     },
-
     "bare-def": {
       "comment": "`def` with no name yet (mid-edit); keeps the keyword colored.",
       "match": "\\b(def)\\b",
       "name": "keyword.declaration.function.vibescript"
     },
-
     "parameters": {
       "begin": "\\(",
       "beginCaptures": {
-        "0": { "name": "punctuation.section.group.begin.vibescript" }
+        "0": {
+          "name": "punctuation.section.group.begin.vibescript"
+        }
       },
       "end": "\\)",
       "endCaptures": {
-        "0": { "name": "punctuation.section.group.end.vibescript" }
+        "0": {
+          "name": "punctuation.section.group.end.vibescript"
+        }
       },
       "name": "meta.group.parameters.vibescript",
       "patterns": [
-        { "include": "#comments" },
+        {
+          "include": "#comments"
+        },
+        {
+          "match": "\\*\\*|\\*|&",
+          "name": "keyword.operator.parameter.vibescript"
+        },
         {
           "match": ",",
           "name": "punctuation.separator.parameter.vibescript"
@@ -121,49 +191,93 @@
           "match": "[a-z_][a-zA-Z0-9_]*[?!]?",
           "name": "variable.parameter.vibescript"
         },
-        { "include": "#parameter-type" },
-        { "include": "#parameter-default" }
+        {
+          "include": "#parameter-type"
+        },
+        {
+          "include": "#parameter-default"
+        }
       ]
     },
-
     "parameter-type": {
       "begin": ":",
       "beginCaptures": {
-        "0": { "name": "punctuation.separator.annotation.type.vibescript" }
+        "0": {
+          "name": "punctuation.separator.annotation.type.vibescript"
+        }
       },
-      "end": "(?=[,)])|$",
+      "end": "(?=[,)=])",
       "name": "meta.annotation.type.vibescript",
-      "patterns": [{ "include": "#type-body" }]
+      "patterns": [
+        {
+          "include": "#type-body"
+        }
+      ]
     },
-
     "parameter-default": {
       "comment": "Default values reuse the literal rules so `def f(mode = :read)` keeps symbol/number/string highlighting inside the signature.",
       "begin": "=",
       "beginCaptures": {
-        "0": { "name": "keyword.operator.assignment.vibescript" }
+        "0": {
+          "name": "keyword.operator.assignment.vibescript"
+        }
       },
       "end": "(?=[,)])|$",
       "patterns": [
-        { "include": "#strings" },
-        { "include": "#numbers" },
-        { "include": "#symbols" },
-        { "include": "#constants" },
-        { "include": "#identifiers" }
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "include": "#symbols"
+        },
+        {
+          "include": "#constants"
+        },
+        {
+          "include": "#identifiers"
+        }
       ]
     },
-
     "return-type": {
       "begin": "(->)",
       "beginCaptures": {
-        "1": { "name": "punctuation.separator.annotation.return-type.vibescript" }
+        "1": {
+          "name": "punctuation.separator.annotation.return-type.vibescript"
+        }
       },
       "end": "$",
       "name": "meta.annotation.type.vibescript",
-      "patterns": [{ "include": "#type-body" }]
+      "patterns": [
+        {
+          "include": "#type-body"
+        }
+      ]
     },
-
     "type-body": {
       "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#type-generics"
+        },
+        {
+          "include": "#type-tuple"
+        },
+        {
+          "include": "#block-type-arguments"
+        },
+        {
+          "match": "->",
+          "name": "punctuation.separator.annotation.return-type.vibescript"
+        },
+        {
+          "match": "::|\\.",
+          "name": "punctuation.accessor.vibescript"
+        },
         {
           "match": "\\|",
           "name": "keyword.operator.union.vibescript"
@@ -176,7 +290,9 @@
           "match": "\\bnil\\b",
           "name": "constant.language.null.vibescript"
         },
-        { "include": "#type-shape" },
+        {
+          "include": "#type-shape"
+        },
         {
           "match": "[A-Z][a-zA-Z0-9_]*",
           "name": "support.class.vibescript"
@@ -187,51 +303,68 @@
         }
       ]
     },
-
     "type-shape": {
-      "comment": "Structural shape types: { name: String, age: int? }. Field names may be labels, string literals, symbols, or quoted symbols.",
       "begin": "\\{",
       "beginCaptures": {
-        "0": { "name": "punctuation.section.braces.begin.vibescript" }
+        "0": {
+          "name": "punctuation.section.braces.begin.vibescript"
+        }
       },
       "end": "\\}",
       "endCaptures": {
-        "0": { "name": "punctuation.section.braces.end.vibescript" }
+        "0": {
+          "name": "punctuation.section.braces.end.vibescript"
+        }
       },
       "name": "meta.annotation.type.vibescript",
       "patterns": [
         {
-          "match": "[a-z_][a-zA-Z0-9_]*(?=\\s*:)",
+          "match": "\\.\\.\\.",
+          "name": "keyword.operator.open-shape.vibescript"
+        },
+        {
+          "match": "[a-z_][a-zA-Z0-9_]*\\??(?=\\s*:)",
           "name": "variable.other.member.vibescript"
         },
-        { "include": "#symbols" },
-        { "include": "#strings" },
-        { "include": "#shape-field-type" },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#shape-field-type"
+        },
         {
           "match": ",",
           "name": "punctuation.separator.sequence.vibescript"
         }
       ]
     },
-
     "shape-field-type": {
       "begin": ":",
       "beginCaptures": {
-        "0": { "name": "punctuation.separator.annotation.type.vibescript" }
+        "0": {
+          "name": "punctuation.separator.annotation.type.vibescript"
+        }
       },
-      "end": "(?=[,}])|$",
+      "end": "(?=[,}])",
       "name": "meta.annotation.type.vibescript",
-      "patterns": [{ "include": "#type-body" }]
+      "patterns": [
+        {
+          "include": "#type-body"
+        }
+      ]
     },
-
     "class-declaration": {
       "patterns": [
         {
           "match": "\\b(class)\\s+([A-Z][a-zA-Z0-9_]*)",
           "name": "meta.class.vibescript",
           "captures": {
-            "1": { "name": "keyword.declaration.class.vibescript" },
-            "2": { "name": "entity.name.class.vibescript" }
+            "1": {
+              "name": "keyword.declaration.class.vibescript"
+            },
+            "2": {
+              "name": "entity.name.class.vibescript"
+            }
           }
         },
         {
@@ -240,52 +373,79 @@
         }
       ]
     },
-
     "enum-declaration": {
       "comment": "The name rides along in the begin match so no anchor is needed; members are bare words (constant or identifier), one or more, until `end`.",
       "begin": "\\b(enum)\\s+([A-Z][a-zA-Z0-9_]*|[a-z_][a-zA-Z0-9_]*)",
       "beginCaptures": {
-        "1": { "name": "keyword.declaration.enum.vibescript" },
-        "2": { "name": "entity.name.enum.vibescript" }
+        "1": {
+          "name": "keyword.declaration.enum.vibescript"
+        },
+        "2": {
+          "name": "entity.name.enum.vibescript"
+        }
       },
       "end": "\\bend\\b",
       "endCaptures": {
-        "0": { "name": "keyword.control.block.vibescript" }
+        "0": {
+          "name": "keyword.control.block.vibescript"
+        }
       },
       "name": "meta.enum.vibescript",
       "patterns": [
-        { "include": "#comments" },
+        {
+          "include": "#comments"
+        },
         {
           "match": "[A-Z][a-zA-Z0-9_]*|[a-z_][a-zA-Z0-9_]*[?!]?",
           "name": "constant.other.enum.vibescript"
         }
       ]
     },
-
     "declarations": {
       "patterns": [
-        { "include": "#member-declaration" },
         {
-          "match": "\\b(require|as)\\b",
+          "match": "\\brequire\\b",
           "name": "keyword.control.import.vibescript"
+        },
+        {
+          "include": "#member-declaration"
         },
         {
           "match": "\\b(alias_method)\\b",
           "name": "keyword.declaration.alias.vibescript"
         },
-        { "include": "#alias-declaration" }
+        {
+          "include": "#alias-declaration"
+        }
       ]
     },
-
     "member-declaration": {
       "begin": "\\b(property|getter|setter)\\b",
       "beginCaptures": {
-        "1": { "name": "keyword.declaration.member.vibescript" }
+        "1": {
+          "name": "keyword.declaration.member.vibescript"
+        }
       },
       "end": "$",
       "name": "meta.declaration.member.vibescript",
       "patterns": [
-        { "include": "#comments" },
+        {
+          "include": "#comments"
+        },
+        {
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.annotation.type.vibescript"
+            }
+          },
+          "end": "(?=[,=]|$)",
+          "patterns": [
+            {
+              "include": "#type-body"
+            }
+          ]
+        },
         {
           "match": "[a-z_][a-zA-Z0-9_]*[?!]?",
           "name": "variable.other.member.vibescript"
@@ -296,33 +456,36 @@
         }
       ]
     },
-
     "alias-declaration": {
       "comment": "`alias new_name old_name` takes bare identifiers, symbols, or quoted symbols, space separated, on one line.",
       "begin": "\\b(alias)\\b",
       "beginCaptures": {
-        "1": { "name": "keyword.declaration.alias.vibescript" }
+        "1": {
+          "name": "keyword.declaration.alias.vibescript"
+        }
       },
       "end": "$",
       "patterns": [
-        { "include": "#comments" },
-        { "include": "#symbols" },
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#symbols"
+        },
         {
           "match": "[a-z_][a-zA-Z0-9_]*[?!]?",
           "name": "entity.name.function.vibescript"
         }
       ]
     },
-
     "control-keywords": {
       "patterns": [
         {
-          "match": "\\b(if|elsif|else|unless|case|when|then)\\b",
+          "match": "\\b(if|elsif|else|case|when|then)\\b",
           "name": "keyword.control.conditional.vibescript"
         },
-        { "include": "#block-start" },
         {
-          "match": "\\b(while|until|for|in)\\b",
+          "match": "\\b(while|for|in)\\b",
           "name": "keyword.control.loop.vibescript"
         },
         {
@@ -330,16 +493,12 @@
           "name": "keyword.control.exception.vibescript"
         },
         {
-          "match": "\\b(return|yield|raise|break|next)\\b",
+          "match": "\\b(return|yield|raise|break|next|retry)\\b",
           "name": "keyword.control.flow.vibescript"
         },
         {
           "match": "\\b(end)\\b",
           "name": "keyword.control.block.vibescript"
-        },
-        {
-          "match": "\\b(and|or|not)\\b",
-          "name": "keyword.operator.logical.vibescript"
         },
         {
           "match": "\\b(true|false)\\b",
@@ -355,35 +514,36 @@
         }
       ]
     },
-
-    "block-start": {
-      "comment": "`|` only delimits parameters directly after `do` or `{`; everywhere else it belongs to `||`, `||=`, or union types.",
-      "match": "\\b(do)\\b(?:(\\s*)(\\|)([^|]*)(\\|))?",
-      "captures": {
-        "1": { "name": "keyword.control.loop.vibescript" },
-        "3": { "name": "punctuation.separator.block-parameters.begin.vibescript" },
-        "4": {
-          "name": "meta.block.parameters.vibescript",
-          "patterns": [{ "include": "#block-parameter" }]
-        },
-        "5": { "name": "punctuation.separator.block-parameters.end.vibescript" }
-      }
-    },
-
     "brace-block-parameters": {
       "match": "(?<=\\{|\\{ )(\\|)([^|]*)(\\|)",
       "captures": {
-        "1": { "name": "punctuation.separator.block-parameters.begin.vibescript" },
+        "1": {
+          "name": "punctuation.separator.block-parameters.begin.vibescript"
+        },
         "2": {
           "name": "meta.block.parameters.vibescript",
-          "patterns": [{ "include": "#block-parameter" }]
+          "patterns": [
+            {
+              "include": "#block-parameter"
+            }
+          ]
         },
-        "3": { "name": "punctuation.separator.block-parameters.end.vibescript" }
+        "3": {
+          "name": "punctuation.separator.block-parameters.end.vibescript"
+        }
       }
     },
-
     "block-parameter": {
       "patterns": [
+        {
+          "begin": ":",
+          "end": "(?=[,|])",
+          "patterns": [
+            {
+              "include": "#type-body"
+            }
+          ]
+        },
         {
           "match": "[a-z_][a-zA-Z0-9_]*[?!]?",
           "name": "variable.parameter.vibescript"
@@ -394,23 +554,29 @@
         }
       ]
     },
-
     "strings": {
       "patterns": [
-        { "include": "#double-quoted-string" },
-        { "include": "#single-quoted-string" }
+        {
+          "include": "#double-quoted-string"
+        },
+        {
+          "include": "#single-quoted-string"
+        }
       ]
     },
-
     "double-quoted-string": {
       "comment": "Any backslashed character is an escape (unknown ones produce the character itself); \\x.. and \\u.... take hex digits. `\\#` keeps a following `{` from opening an interpolation.",
       "begin": "\"",
       "beginCaptures": {
-        "0": { "name": "punctuation.definition.string.begin.vibescript" }
+        "0": {
+          "name": "punctuation.definition.string.begin.vibescript"
+        }
       },
       "end": "\"",
       "endCaptures": {
-        "0": { "name": "punctuation.definition.string.end.vibescript" }
+        "0": {
+          "name": "punctuation.definition.string.end.vibescript"
+        }
       },
       "name": "string.quoted.double.vibescript",
       "patterns": [
@@ -418,19 +584,24 @@
           "match": "\\\\(?:x[0-9a-fA-F]{1,2}|u[0-9a-fA-F]{4}|[^\\n])",
           "name": "constant.character.escape.vibescript"
         },
-        { "include": "#interpolation" }
+        {
+          "include": "#interpolation"
+        }
       ]
     },
-
     "single-quoted-string": {
       "comment": "Single-quoted strings only recognize \\' and \\\\; every other backslash (and any #{...}) is literal text.",
       "begin": "'",
       "beginCaptures": {
-        "0": { "name": "punctuation.definition.string.begin.vibescript" }
+        "0": {
+          "name": "punctuation.definition.string.begin.vibescript"
+        }
       },
       "end": "'",
       "endCaptures": {
-        "0": { "name": "punctuation.definition.string.end.vibescript" }
+        "0": {
+          "name": "punctuation.definition.string.end.vibescript"
+        }
       },
       "name": "string.quoted.single.vibescript",
       "patterns": [
@@ -440,40 +611,53 @@
         }
       ]
     },
-
     "interpolation": {
       "comment": "The body re-enters the full expression grammar, so nested strings and nested interpolations come along for free. Braces balance so hash and block literals inside #{...} don't close the interpolation early.",
       "begin": "#\\{",
       "beginCaptures": {
-        "0": { "name": "punctuation.section.interpolation.begin.vibescript" }
+        "0": {
+          "name": "punctuation.section.interpolation.begin.vibescript"
+        }
       },
       "end": "\\}",
       "endCaptures": {
-        "0": { "name": "punctuation.section.interpolation.end.vibescript" }
+        "0": {
+          "name": "punctuation.section.interpolation.end.vibescript"
+        }
       },
       "name": "meta.interpolation.vibescript",
       "contentName": "meta.embedded.line.vibescript",
       "patterns": [
-        { "include": "#interpolation-braces" },
-        { "include": "$self" }
+        {
+          "include": "#interpolation-braces"
+        },
+        {
+          "include": "$self"
+        }
       ]
     },
-
     "interpolation-braces": {
       "begin": "\\{",
       "beginCaptures": {
-        "0": { "name": "punctuation.section.braces.begin.vibescript" }
+        "0": {
+          "name": "punctuation.section.braces.begin.vibescript"
+        }
       },
       "end": "\\}",
       "endCaptures": {
-        "0": { "name": "punctuation.section.braces.end.vibescript" }
+        "0": {
+          "name": "punctuation.section.braces.end.vibescript"
+        }
       },
       "patterns": [
-        { "include": "#interpolation-braces" },
-        { "include": "$self" }
+        {
+          "include": "#interpolation-braces"
+        },
+        {
+          "include": "$self"
+        }
       ]
     },
-
     "numbers": {
       "comment": "An exponent marker makes the literal a float even without a decimal point (1e3 is 1000.0). Underscores sit between digits only.",
       "patterns": [
@@ -507,7 +691,6 @@
         }
       ]
     },
-
     "symbols": {
       "comment": "Quoted symbols use the matching string quote's escapes, so an escaped quote stays inside the symbol (:'don\\'t'). Symbols may also name operators.",
       "patterns": [
@@ -515,108 +698,80 @@
           "match": "(?<!:)(:)(\")(?:[^\"\\\\]|\\\\.)*(\")",
           "name": "constant.other.symbol.double-quoted.vibescript",
           "captures": {
-            "1": { "name": "punctuation.definition.constant.vibescript" },
-            "2": { "name": "punctuation.definition.constant.begin.vibescript" },
-            "3": { "name": "punctuation.definition.constant.end.vibescript" }
+            "1": {
+              "name": "punctuation.definition.constant.vibescript"
+            },
+            "2": {
+              "name": "punctuation.definition.constant.begin.vibescript"
+            },
+            "3": {
+              "name": "punctuation.definition.constant.end.vibescript"
+            }
           }
         },
         {
           "match": "(?<!:)(:)(')(?:[^'\\\\]|\\\\.)*(')",
           "name": "constant.other.symbol.single-quoted.vibescript",
           "captures": {
-            "1": { "name": "punctuation.definition.constant.vibescript" },
-            "2": { "name": "punctuation.definition.constant.begin.vibescript" },
-            "3": { "name": "punctuation.definition.constant.end.vibescript" }
+            "1": {
+              "name": "punctuation.definition.constant.vibescript"
+            },
+            "2": {
+              "name": "punctuation.definition.constant.begin.vibescript"
+            },
+            "3": {
+              "name": "punctuation.definition.constant.end.vibescript"
+            }
           }
         },
         {
           "match": "(?<!:)(:)(?:\\[\\]=|\\[\\]|===|<=>|\\*\\*|<<|<=|>=|==|!=|&&|\\|\\||[+\\-*/%<>&|!])",
           "name": "constant.other.symbol.operator.vibescript",
           "captures": {
-            "1": { "name": "punctuation.definition.constant.vibescript" }
+            "1": {
+              "name": "punctuation.definition.constant.vibescript"
+            }
           }
         },
         {
           "match": "(?<!:)(:)[a-zA-Z_][a-zA-Z0-9_]*[?!]?",
           "name": "constant.other.symbol.vibescript",
           "captures": {
-            "1": { "name": "punctuation.definition.constant.vibescript" }
+            "1": {
+              "name": "punctuation.definition.constant.vibescript"
+            }
           }
         }
       ]
     },
-
     "hash-keys": {
       "comment": "Hash keys and keyword arguments: { name: \"alex\" }, call(limit: 10)",
       "match": "([a-z_][a-zA-Z0-9_]*[?!]?)(:)(?!:)",
       "captures": {
-        "1": { "name": "constant.other.symbol.vibescript" },
-        "2": { "name": "punctuation.definition.constant.vibescript" }
+        "1": {
+          "name": "constant.other.symbol.vibescript"
+        },
+        "2": {
+          "name": "punctuation.definition.constant.vibescript"
+        }
       }
     },
-
-    "percent-arrays": {
-      "comment": "Uppercase variants (%W, %I) interpolate; lowercase ones are literal.",
-      "patterns": [
-        {
-          "begin": "(?<![\\w)\\]}\"])%[WI]\\[",
-          "beginCaptures": {
-            "0": { "name": "punctuation.definition.string.begin.vibescript" }
-          },
-          "end": "\\]",
-          "endCaptures": {
-            "0": { "name": "punctuation.definition.string.end.vibescript" }
-          },
-          "name": "string.quoted.other.percent-array.vibescript",
-          "patterns": [{ "include": "#interpolation" }]
-        },
-        {
-          "begin": "(?<![\\w)\\]}\"])%[WI]\\(",
-          "beginCaptures": {
-            "0": { "name": "punctuation.definition.string.begin.vibescript" }
-          },
-          "end": "\\)",
-          "endCaptures": {
-            "0": { "name": "punctuation.definition.string.end.vibescript" }
-          },
-          "name": "string.quoted.other.percent-array.vibescript",
-          "patterns": [{ "include": "#interpolation" }]
-        },
-        {
-          "begin": "(?<![\\w)\\]}\"])%[wi]\\[",
-          "beginCaptures": {
-            "0": { "name": "punctuation.definition.string.begin.vibescript" }
-          },
-          "end": "\\]",
-          "endCaptures": {
-            "0": { "name": "punctuation.definition.string.end.vibescript" }
-          },
-          "name": "string.quoted.other.percent-array.vibescript"
-        },
-        {
-          "begin": "(?<![\\w)\\]}\"])%[wi]\\(",
-          "beginCaptures": {
-            "0": { "name": "punctuation.definition.string.begin.vibescript" }
-          },
-          "end": "\\)",
-          "endCaptures": {
-            "0": { "name": "punctuation.definition.string.end.vibescript" }
-          },
-          "name": "string.quoted.other.percent-array.vibescript"
-        }
-      ]
-    },
-
     "regexps": {
-      "comment": "Heuristic port of the grammar's external scanner: a regex never follows a value (identifier, closing bracket, string) and never opens with a space or `=`, which keeps `a / b` and `a /= b` as operators.",
-      "begin": "(?<![\\w)\\]}\"])(/)(?![\\s=])",
+      "comment": "A slash adjacent to another slash is floor division, never an empty regex.",
+      "begin": "(?<![\\w)\\]}\"/])(/)(?![\\s=/])",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.string.begin.vibescript" }
+        "1": {
+          "name": "punctuation.definition.string.begin.vibescript"
+        }
       },
       "end": "(/)([a-z]*)|$",
       "endCaptures": {
-        "1": { "name": "punctuation.definition.string.end.vibescript" },
-        "2": { "name": "keyword.other.flag.regexp.vibescript" }
+        "1": {
+          "name": "punctuation.definition.string.end.vibescript"
+        },
+        "2": {
+          "name": "keyword.other.flag.regexp.vibescript"
+        }
       },
       "name": "string.regexp.vibescript",
       "patterns": [
@@ -624,10 +779,11 @@
           "match": "\\\\.",
           "name": "constant.character.escape.vibescript"
         },
-        { "include": "#regexp-class" }
+        {
+          "include": "#regexp-class"
+        }
       ]
     },
-
     "regexp-class": {
       "begin": "\\[",
       "end": "\\]|$",
@@ -638,7 +794,6 @@
         }
       ]
     },
-
     "variables": {
       "patterns": [
         {
@@ -651,21 +806,28 @@
         }
       ]
     },
-
     "calls": {
       "patterns": [
         {
           "match": "(&\\.)([a-z_][a-zA-Z0-9_]*[?!]?)",
           "captures": {
-            "1": { "name": "punctuation.accessor.safe-navigation.vibescript" },
-            "2": { "name": "variable.function.vibescript" }
+            "1": {
+              "name": "punctuation.accessor.safe-navigation.vibescript"
+            },
+            "2": {
+              "name": "variable.function.vibescript"
+            }
           }
         },
         {
           "match": "(\\.)([a-z_][a-zA-Z0-9_]*[?!]?)",
           "captures": {
-            "1": { "name": "punctuation.accessor.dot.vibescript" },
-            "2": { "name": "variable.function.vibescript" }
+            "1": {
+              "name": "punctuation.accessor.dot.vibescript"
+            },
+            "2": {
+              "name": "variable.function.vibescript"
+            }
           }
         },
         {
@@ -673,7 +835,7 @@
           "name": "variable.function.vibescript"
         },
         {
-          "match": "\\b[a-z_][a-zA-Z0-9_]*[?!]?(?=\\s+do\\b)",
+          "match": "\\b[a-z_][a-zA-Z0-9_]*[?!]?(?=\\s*\\{)",
           "name": "variable.function.vibescript"
         },
         {
@@ -683,17 +845,14 @@
         }
       ]
     },
-
     "constants": {
       "match": "[A-Z][a-zA-Z0-9_]*",
       "name": "support.class.vibescript"
     },
-
     "identifiers": {
       "comment": "Bare identifiers are consumed whole so trailing ?/! never leak into the operator rules (`valid?` is one name, not `valid` + ternary `?`).",
       "match": "\\b[a-z_][a-zA-Z0-9_]*(?:[?!](?!=))?"
     },
-
     "operators": {
       "patterns": [
         {
@@ -701,7 +860,7 @@
           "name": "keyword.operator.comparison.vibescript"
         },
         {
-          "match": "\\*\\*=|\\|\\|=|&&=|[+\\-*/%]=",
+          "match": "//=|\\*\\*=|\\|\\|=|&&=|[+\\-*/%]=",
           "name": "keyword.operator.assignment.augmented.vibescript"
         },
         {
@@ -742,7 +901,7 @@
           "name": "keyword.operator.bitwise.vibescript"
         },
         {
-          "match": "\\*\\*|[+\\-*/%]",
+          "match": "//|\\*\\*|[+\\-*/%]",
           "name": "keyword.operator.arithmetic.vibescript"
         },
         {
@@ -759,7 +918,6 @@
         }
       ]
     },
-
     "punctuation": {
       "patterns": [
         {
@@ -773,6 +931,236 @@
         {
           "match": "\\|",
           "name": "punctuation.separator.vibescript"
+        }
+      ]
+    },
+    "type-generics": {
+      "begin": "<",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.generic.begin.vibescript"
+        }
+      },
+      "end": ">",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.generic.end.vibescript"
+        }
+      },
+      "name": "meta.annotation.type.vibescript",
+      "patterns": [
+        {
+          "include": "#type-body"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.sequence.vibescript"
+        }
+      ]
+    },
+    "type-tuple": {
+      "begin": "\\[",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.brackets.begin.vibescript"
+        }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.brackets.end.vibescript"
+        }
+      },
+      "name": "meta.annotation.type.vibescript",
+      "patterns": [
+        {
+          "include": "#type-body"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.sequence.vibescript"
+        }
+      ]
+    },
+    "block-type-arguments": {
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.group.begin.vibescript"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.group.end.vibescript"
+        }
+      },
+      "name": "meta.annotation.type.vibescript",
+      "patterns": [
+        {
+          "include": "#type-body"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.sequence.vibescript"
+        }
+      ]
+    },
+    "type-alias": {
+      "begin": "\\b(type)\\s+([A-Z][a-zA-Z0-9_]*)\\s*(=)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.declaration.type.vibescript"
+        },
+        "2": {
+          "name": "entity.name.type.vibescript"
+        },
+        "3": {
+          "name": "keyword.operator.assignment.vibescript"
+        }
+      },
+      "end": "(?=;)|$",
+      "patterns": [
+        {
+          "include": "#type-body"
+        }
+      ]
+    },
+    "typed-local": {
+      "begin": "(?:^|(?<=;))\\s*(@{0,2}[A-Za-z_][a-zA-Z0-9_]*)(:)(?!:)",
+      "beginCaptures": {
+        "1": {
+          "name": "variable.other.vibescript"
+        },
+        "2": {
+          "name": "punctuation.separator.annotation.type.vibescript"
+        }
+      },
+      "end": "(?==|;)|$",
+      "name": "meta.annotation.type.vibescript",
+      "patterns": [
+        {
+          "include": "#type-body"
+        }
+      ]
+    },
+    "type-cast": {
+      "begin": "(\\.)(as)(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.accessor.dot.vibescript"
+        },
+        "2": {
+          "name": "variable.function.vibescript"
+        },
+        "3": {
+          "name": "punctuation.section.group.begin.vibescript"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.group.end.vibescript"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#type-body"
+        }
+      ]
+    },
+    "type-literals": {
+      "patterns": [
+        {
+          "begin": "\\b(array|hash|type)(<)",
+          "beginCaptures": {
+            "1": {
+              "name": "support.type.vibescript"
+            },
+            "2": {
+              "name": "punctuation.section.generic.begin.vibescript"
+            }
+          },
+          "end": ">",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.generic.end.vibescript"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#type-body"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.sequence.vibescript"
+            }
+          ]
+        },
+        {
+          "begin": "\\{(?=\\s*(?:\\.\\.\\.|[a-z_]\\w*\\??:\\s*(?:int|float|string|bool|array|hash|any|symbol|duration|time|money|regex)\\b))",
+          "end": "\\}",
+          "name": "meta.annotation.type.vibescript",
+          "patterns": [
+            {
+              "match": "\\.\\.\\.",
+              "name": "keyword.operator.open-shape.vibescript"
+            },
+            {
+              "match": "[a-z_][a-zA-Z0-9_]*\\??(?=\\s*:)",
+              "name": "variable.other.member.vibescript"
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#shape-field-type"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.sequence.vibescript"
+            }
+          ]
+        }
+      ]
+    },
+    "line-comment": {
+      "begin": "#",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.vibescript"
+        }
+      },
+      "end": "$",
+      "name": "comment.line.number-sign.vibescript",
+      "patterns": [
+        {
+          "match": "\\b(vibe)(:)\\s+([0-9]+\\.[0-9]+)\\b",
+          "captures": {
+            "1": {
+              "name": "keyword.other.directive.vibescript"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.vibescript"
+            },
+            "3": {
+              "name": "constant.numeric.version.vibescript"
+            }
+          }
+        },
+        {
+          "match": "\\b(uses)(:)\\s+([a-z_, ]+)",
+          "captures": {
+            "1": {
+              "name": "keyword.other.directive.vibescript"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.vibescript"
+            },
+            "3": {
+              "name": "support.other.capability.vibescript"
+            }
+          }
         }
       ]
     }

@@ -3,30 +3,87 @@
     "lineComment": "#"
   },
   "brackets": [
-    ["{", "}"],
-    ["[", "]"],
-    ["(", ")"]
+    [
+      "{",
+      "}"
+    ],
+    [
+      "[",
+      "]"
+    ],
+    [
+      "(",
+      ")"
+    ]
   ],
   "autoClosingPairs": [
-    { "open": "{", "close": "}" },
-    { "open": "[", "close": "]" },
-    { "open": "(", "close": ")" },
-    { "open": "\"", "close": "\"", "notIn": ["string", "comment"] },
-    { "open": "'", "close": "'", "notIn": ["string", "comment"] },
-    { "open": "|", "close": "|", "notIn": ["string", "comment"] }
+    {
+      "open": "{",
+      "close": "}"
+    },
+    {
+      "open": "[",
+      "close": "]"
+    },
+    {
+      "open": "(",
+      "close": ")"
+    },
+    {
+      "open": "\"",
+      "close": "\"",
+      "notIn": [
+        "string",
+        "comment"
+      ]
+    },
+    {
+      "open": "'",
+      "close": "'",
+      "notIn": [
+        "string",
+        "comment"
+      ]
+    },
+    {
+      "open": "|",
+      "close": "|",
+      "notIn": [
+        "string",
+        "comment"
+      ]
+    }
   ],
   "surroundingPairs": [
-    ["{", "}"],
-    ["[", "]"],
-    ["(", ")"],
-    ["\"", "\""],
-    ["'", "'"],
-    ["|", "|"]
+    [
+      "{",
+      "}"
+    ],
+    [
+      "[",
+      "]"
+    ],
+    [
+      "(",
+      ")"
+    ],
+    [
+      "\"",
+      "\""
+    ],
+    [
+      "'",
+      "'"
+    ],
+    [
+      "|",
+      "|"
+    ]
   ],
   "autoCloseBefore": ";:.,=}])>| \n\t",
   "wordPattern": "(@{1,2})?[A-Za-z_][A-Za-z0-9_]*[?!]?",
   "indentationRules": {
-    "increaseIndentPattern": "^\\s*(?:(?:export\\s+)?(?:private\\s+)?def|class|enum|if|elsif|else|unless|while|until|for|case|when|begin|rescue|ensure)\\b|.*\\bdo\\b.*$",
+    "increaseIndentPattern": "^\\s*(?:(?:export\\s+)?(?:(?:private|public|protected)\\s+)?def|class|module|enum|if|elsif|else|while|for|case|when|begin|rescue|ensure)\\b|[\\[{]\\s*(?:\\|[^|]*\\|\\s*)?(?:#.*)?$",
     "decreaseIndentPattern": "^\\s*(?:[}\\]]\\s*$|(?:end|elsif|else|when|rescue|ensure)\\b)"
   },
   "folding": {
