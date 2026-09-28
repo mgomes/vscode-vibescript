@@ -2,7 +2,7 @@
   "name": "vscode-vibescript",
   "displayName": "Vibescript",
   "description": "Vibescript language support: syntax highlighting and language server features for .vibe files.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "mgomes",
   "license": "MIT",
   "author": {
@@ -56,7 +56,7 @@
         "vibescript.server.path": {
           "type": "string",
           "default": "",
-          "markdownDescription": "Absolute path to the `vibes` binary. When empty, `vibes` is looked up on your `PATH`."
+          "markdownDescription": "Absolute path to the Rust Vibescript 0.80.0 `vibes` binary. Empty uses `PATH`. Install with `cargo install --git https://github.com/xipkit/vibescript --tag v0.80.0 vibes`."
         },
         "vibescript.server.args": {
           "type": "array",

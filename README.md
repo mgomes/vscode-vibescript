@@ -1,24 +1,28 @@
 # Vibescript for VS Code
 
 Syntax highlighting and language server support for
-[Vibescript](https://github.com/mgomes/vibescript) in one extension.
+[Vibescript](https://github.com/xipkit/vibescript) in one extension.
 
 ## Features
 
 - Syntax highlighting for `.vibe` files, including strings with interpolation,
-  regex literals, `%w[...]` / `%i(...)` arrays, symbols, enums, and typed
-  signatures
+  regex literals, symbols, enums, typed locals and signatures, generics,
+  unions, optionals, tuples, record shapes, type aliases, and brace blocks
 - Diagnostics, hover documentation, completions, signature help,
   go-to-definition, document symbols, and formatting through `vibes lsp`
 - Comment toggling, bracket matching, and indentation rules
 
 ## Requirements
 
-The `vibes` binary must be on your `PATH`. The extension does not bundle or
-download it, so the diagnostics you see always come from the same toolchain that
-runs your code. Install Vibescript from
-[its releases](https://github.com/mgomes/vibescript/releases), then reload the
-window.
+Supports the Rust implementation of Vibescript v0.80.0. Install its CLI and
+language server with:
+
+```sh
+cargo install --git https://github.com/xipkit/vibescript --tag v0.80.0 vibes
+```
+
+Add Cargo's bin directory (`~/.cargo/bin` by default) to your editor's `PATH`.
+The server command remains `vibes lsp`. Replace any path to the retired Go binary.
 
 Highlighting works with or without the binary; only the language server
 features need it.
@@ -68,8 +72,17 @@ as ordinary code.
 
 ## Related
 
-- [vibescript](https://github.com/mgomes/vibescript) - the language and toolchain
+- [vibescript](https://github.com/xipkit/vibescript) - the language and toolchain
 - [sublime-vibescript](https://github.com/mgomes/sublime-vibescript) and
   [LSP-vibescript](https://github.com/mgomes/LSP-vibescript) - Sublime Text support
 - [zed-vibescript](https://github.com/mgomes/zed-vibescript) - Zed support
 - [tree-sitter-vibescript](https://github.com/mgomes/tree-sitter-vibescript) - tree-sitter grammar
+
+The `# vibe: 0.80` first-line marker still identifies extensionless scripts.
+It is an ordinary comment to the Rust compiler, not a version constraint.
+Removed syntax (`unless`, `until`, `do ... end`, percent literals and symbol
+hash keys) is no longer highlighted as supported language syntax. Use `vibes fix`
+to migrate old programs.
+
+Bare zero-argument function calls and local references share the same spelling;
+lexical highlighting cannot distinguish them. Dotted calls remain highlighted.
