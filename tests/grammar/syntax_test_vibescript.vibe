@@ -321,6 +321,13 @@ private :+, :"weird name"
 #       ^^ constant.other.symbol.operator.vibescript
 #           ^^^^^^^^^^^^^ constant.other.symbol.double-quoted.vibescript
 
+alias quotient ://
+#              ^^^ constant.other.symbol.operator.vibescript
+
+private ://, :/
+#       ^^^ constant.other.symbol.operator.vibescript
+#            ^^ constant.other.symbol.operator.vibescript
+
 
 
 begin
